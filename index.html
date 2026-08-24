@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>For You</title>
+    <title>Our Special Date</title>
 
     <style>
         * {
@@ -15,176 +15,567 @@
 
         body {
             min-height: 100vh;
-            background: #0d0b0c;
-            color: white;
-            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
+
+            background:
+                radial-gradient(circle at 50% 35%, #b83f52 0%, #9f3044 45%, #842638 100%);
+
+            font-family: Arial, Helvetica, sans-serif;
+
             overflow: hidden;
         }
 
-        .container {
-            width: 90%;
-            max-width: 420px;
-            text-align: center;
+        /* Soft background glow */
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+
+            background: rgba(255, 170, 185, 0.13);
+
+            border-radius: 50%;
+
+            filter: blur(80px);
+
+            top: -180px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            pointer-events: none;
         }
 
-        .small-text {
-            font-size: 12px;
-            letter-spacing: 4px;
-            color: #999;
-            margin-bottom: 25px;
-            text-transform: uppercase;
+
+        /* Main white card */
+
+        .card {
+            width: min(88vw, 560px);
+
+            min-height: 720px;
+
+            background: rgba(255, 255, 255, 0.97);
+
+            border-radius: 34px;
+
+            padding: 60px 42px 45px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            box-shadow:
+                0 25px 60px rgba(55, 0, 15, 0.30),
+                0 5px 18px rgba(55, 0, 15, 0.12);
+
+            border: 1px solid rgba(255, 255, 255, 0.8);
+
+            position: relative;
+
+            animation: cardAppear 0.8s ease;
         }
+
+
+        @keyframes cardAppear {
+
+            from {
+                opacity: 0;
+                transform: translateY(25px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+        }
+
+
+        /* Title */
 
         h1 {
-            font-size: 34px;
-            font-weight: 400;
-            margin-bottom: 12px;
+
+            color: #c2185b;
+
+            font-size: clamp(28px, 6vw, 39px);
+
+            font-weight: 700;
+
+            text-align: center;
+
+            margin-bottom: 15px;
+
+            letter-spacing: -0.5px;
         }
+
 
         .subtitle {
-            color: #888;
-            font-size: 14px;
-            margin-bottom: 40px;
+
+            color: #d88aaa;
+
+            font-size: 19px;
+
+            text-align: center;
+
+            margin-bottom: 48px;
+
+            font-weight: 500;
         }
 
-        .code-display {
+
+        /* Date display */
+
+        .date-area {
+
+            width: 100%;
+
             display: flex;
+
             justify-content: center;
-            gap: 14px;
-            margin-bottom: 35px;
+
+            gap: 12px;
+
+            margin-bottom: 48px;
+
+            position: relative;
         }
 
-        .dot {
-            width: 13px;
-            height: 13px;
-            border: 1px solid #777;
-            border-radius: 50%;
-            transition: 0.2s;
+
+        .date-slot {
+
+            width: 45px;
+
+            height: 55px;
+
+            border-bottom: 3px solid #e9a9c3;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: flex-end;
+
+            padding-bottom: 8px;
+
+            position: relative;
+
+            color: #c2185b;
+
+            font-size: 25px;
+
+            font-weight: 600;
         }
 
-        .dot.filled {
-            background: #ffffff;
-            border-color: #ffffff;
+
+        /* Hearts above first 3 digits */
+
+        .heart {
+
+            position: absolute;
+
+            top: -32px;
+
+            font-size: 30px;
+
+            color: #ef3340;
+
+            opacity: 0;
+
+            transform: scale(0.5);
+
+            transition: all 0.25s ease;
         }
+
+
+        .date-slot.filled .heart {
+
+            opacity: 1;
+
+            transform: scale(1);
+
+        }
+
+
+        /* Keypad */
 
         .keypad {
+
+            width: 100%;
+
+            max-width: 420px;
+
             display: grid;
-            grid-template-columns: repeat(3, 70px);
-            justify-content: center;
-            gap: 14px;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px 24px;
         }
 
-        button {
-            width: 70px;
-            height: 60px;
-            border: 1px solid #333;
-            background: #151314;
-            color: white;
-            border-radius: 50%;
-            font-size: 18px;
+
+        .key {
+
+            height: 75px;
+
+            border: none;
+
+            border-radius: 40px;
+
+            background: #f9ddeb;
+
+            color: #c2185b;
+
+            font-size: 27px;
+
+            font-weight: 600;
+
             cursor: pointer;
-            transition: 0.2s;
+
+            transition:
+                transform 0.15s ease,
+                background 0.15s ease,
+                box-shadow 0.15s ease;
+
+            -webkit-tap-highlight-color: transparent;
         }
 
-        button:hover {
-            background: #252223;
-            transform: scale(1.05);
+
+        .key:hover {
+
+            background: #f6cfe1;
+
+            transform: translateY(-2px);
+
         }
 
-        button:active {
-            transform: scale(0.95);
+
+        .key:active {
+
+            transform: scale(0.94);
+
         }
+
+
+        /* Backspace */
+
+        .backspace {
+
+            font-size: 25px;
+
+            color: #d78cae;
+
+            background: #fdebf3;
+        }
+
+
+        /* Empty space before zero */
+
+        .empty {
+
+            visibility: hidden;
+
+        }
+
+
+        /* Error message */
 
         .message {
-            height: 20px;
+
+            height: 24px;
+
             margin-top: 25px;
-            color: #999;
-            font-size: 13px;
+
+            color: #d22c55;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            text-align: center;
+
         }
+
+
+        /* Success screen */
 
         .success {
+
             position: fixed;
+
             inset: 0;
-            background: #0d0b0c;
+
+            background:
+                radial-gradient(circle at center, #bd4357, #8b2639);
+
             display: flex;
+
             justify-content: center;
+
             align-items: center;
+
             text-align: center;
+
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 1s ease;
+
+            visibility: hidden;
+
+            transition: opacity 0.8s ease;
+
+            z-index: 20;
+
+            color: white;
         }
+
 
         .success.show {
+
             opacity: 1;
-            pointer-events: auto;
+
+            visibility: visible;
+
         }
 
+
+        .success-content {
+
+            padding: 30px;
+
+            animation: successAppear 1s ease;
+        }
+
+
+        @keyframes successAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform: scale(0.8);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: scale(1);
+
+            }
+
+        }
+
+
+        .success-heart {
+
+            font-size: 70px;
+
+            margin-bottom: 25px;
+
+            animation: heartbeat 1.2s infinite;
+        }
+
+
+        @keyframes heartbeat {
+
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+
+        }
+
+
         .success h2 {
-            font-size: 40px;
-            font-weight: 300;
+
+            font-size: clamp(35px, 8vw, 60px);
+
+            font-weight: 500;
+
             margin-bottom: 15px;
         }
 
+
         .success p {
-            color: #aaa;
-            font-size: 15px;
+
+            font-size: 18px;
+
+            opacity: 0.9;
+        }
+
+
+        /* Mobile */
+
+        @media (max-width: 600px) {
+
+            .card {
+
+                width: 91vw;
+
+                min-height: 650px;
+
+                padding: 48px 25px 35px;
+
+                border-radius: 28px;
+
+            }
+
+
+            .subtitle {
+
+                font-size: 16px;
+
+                margin-bottom: 42px;
+
+            }
+
+
+            .date-area {
+
+                gap: 7px;
+
+                margin-bottom: 45px;
+
+            }
+
+
+            .date-slot {
+
+                width: 32px;
+
+                height: 48px;
+
+                font-size: 21px;
+
+            }
+
+
+            .keypad {
+
+                gap: 14px 12px;
+
+            }
+
+
+            .key {
+
+                height: 64px;
+
+                font-size: 23px;
+
+            }
+
+
+            .heart {
+
+                font-size: 23px;
+
+                top: -27px;
+
+            }
+
         }
     </style>
 </head>
 
+
 <body>
 
-    <div class="container">
 
-        <div class="small-text">
-            Private Access
-        </div>
+    <div class="card">
 
-        <h1>Something is waiting for you.</h1>
+        <h1>Enter the Special Date</h1>
 
         <p class="subtitle">
-            Enter the code to continue.
+            DD MM YYYY
         </p>
 
-        <div class="code-display">
-            <div class="dot" id="dot1"></div>
-            <div class="dot" id="dot2"></div>
-            <div class="dot" id="dot3"></div>
-            <div class="dot" id="dot4"></div>
+
+        <div class="date-area">
+
+            <div class="date-slot" id="slot1">
+                <span class="heart">♥</span>
+            </div>
+
+            <div class="date-slot" id="slot2">
+                <span class="heart">♥</span>
+            </div>
+
+            <div class="date-slot" id="slot3">
+                <span class="heart">♥</span>
+            </div>
+
+            <div class="date-slot" id="slot4">
+                <span class="heart">♥</span>
+            </div>
+
+            <div class="date-slot" id="slot5">
+                <span class="heart">♥</span>
+            </div>
+
+            <div class="date-slot" id="slot6">
+                <span class="heart">♥</span>
+            </div>
+
+            <div class="date-slot" id="slot7">
+                <span class="heart">♥</span>
+            </div>
+
+            <div class="date-slot" id="slot8">
+                <span class="heart">♥</span>
+            </div>
+
         </div>
+
 
         <div class="keypad">
-            <button onclick="addNumber('1')">1</button>
-            <button onclick="addNumber('2')">2</button>
-            <button onclick="addNumber('3')">3</button>
 
-            <button onclick="addNumber('4')">4</button>
-            <button onclick="addNumber('5')">5</button>
-            <button onclick="addNumber('6')">6</button>
+            <button class="key" onclick="addNumber('1')">1</button>
+            <button class="key" onclick="addNumber('2')">2</button>
+            <button class="key" onclick="addNumber('3')">3</button>
 
-            <button onclick="addNumber('7')">7</button>
-            <button onclick="addNumber('8')">8</button>
-            <button onclick="addNumber('9')">9</button>
+            <button class="key" onclick="addNumber('4')">4</button>
+            <button class="key" onclick="addNumber('5')">5</button>
+            <button class="key" onclick="addNumber('6')">6</button>
 
-            <button onclick="clearCode()">×</button>
-            <button onclick="addNumber('0')">0</button>
-            <button onclick="checkCode()">✓</button>
+            <button class="key" onclick="addNumber('7')">7</button>
+            <button class="key" onclick="addNumber('8')">8</button>
+            <button class="key" onclick="addNumber('9')">9</button>
+
+            <button class="key empty"></button>
+
+            <button class="key" onclick="addNumber('0')">0</button>
+
+            <button class="key backspace" onclick="deleteNumber()">←</button>
+
         </div>
+
 
         <div class="message" id="message"></div>
 
     </div>
 
 
+    <!-- Success screen -->
+
     <div class="success" id="success">
 
-        <div>
-            <h2>Access Granted.</h2>
-            <p>Okay... you made it. ❤️</p>
+        <div class="success-content">
+
+            <div class="success-heart">
+                ♥
+            </div>
+
+            <h2>Correct.</h2>
+
+            <p>
+                You remembered our special date. ❤️
+            </p>
+
         </div>
 
     </div>
@@ -194,57 +585,113 @@
 
         let enteredCode = "";
 
-        // CHANGE YOUR PASSWORD HERE
-        const correctCode = "1234";
+        /* YOUR SPECIAL DATE */
+
+        const correctCode = "17072026";
 
 
         function addNumber(number) {
 
-            if (enteredCode.length >= 4) {
+            if (enteredCode.length >= 8) {
                 return;
             }
 
             enteredCode += number;
 
-            updateDots();
+            updateDateDisplay();
 
-            if (enteredCode.length === 4) {
-                setTimeout(checkCode, 300);
+            if (enteredCode.length === 8) {
+
+                setTimeout(checkCode, 400);
+
             }
+
         }
 
 
-        function updateDots() {
+        function deleteNumber() {
 
-            for (let i = 1; i <= 4; i++) {
+            if (enteredCode.length === 0) {
+                return;
+            }
 
-                const dot = document.getElementById("dot" + i);
+            enteredCode =
+                enteredCode.slice(0, -1);
+
+            updateDateDisplay();
+
+            document.getElementById("message").textContent = "";
+
+        }
+
+
+        function updateDateDisplay() {
+
+            for (let i = 1; i <= 8; i++) {
+
+                const slot =
+                    document.getElementById("slot" + i);
+
+                const heart =
+                    slot.querySelector(".heart");
 
                 if (i <= enteredCode.length) {
-                    dot.classList.add("filled");
+
+                    slot.classList.add("filled");
+
+                    slot.childNodes.forEach(node => {
+
+                        if (node.nodeType === Node.TEXT_NODE) {
+
+                            node.textContent = "";
+
+                        }
+
+                    });
+
+                    if (heart) {
+
+                        heart.style.display = "block";
+
+                    }
+
+                    slot.setAttribute(
+                        "data-number",
+                        enteredCode[i - 1]
+                    );
+
                 } else {
-                    dot.classList.remove("filled");
+
+                    slot.classList.remove("filled");
+
+                    slot.setAttribute(
+                        "data-number",
+                        ""
+                    );
+
+                }
+
+                /* Show entered number */
+
+                if (i <= enteredCode.length) {
+
+                    slot.innerHTML =
+                        '<span class="heart">♥</span>' +
+                        enteredCode[i - 1];
+
+                } else {
+
+                    slot.innerHTML =
+                        '<span class="heart">♥</span>';
+
                 }
 
             }
-        }
 
-
-        function clearCode() {
-
-            enteredCode = "";
-
-            updateDots();
-
-            document.getElementById("message").textContent = "";
         }
 
 
         function checkCode() {
-
-            if (enteredCode.length !== 4) {
-                return;
-            }
 
             if (enteredCode === correctCode) {
 
@@ -254,15 +701,23 @@
 
             } else {
 
-                document.getElementById("message").textContent =
-                    "Hmm... that's not it.";
+                document
+                    .getElementById("message")
+                    .textContent =
+                    "Hmm... that's not the special date ❤️";
 
-                enteredCode = "";
+                setTimeout(() => {
 
-                updateDots();
+                    enteredCode = "";
+
+                    updateDateDisplay();
+
+                }, 900);
 
             }
+
         }
+
 
     </script>
 
